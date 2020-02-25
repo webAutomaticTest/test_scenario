@@ -28,8 +28,10 @@ export default class TypeAction extends Action {
 		this.text = text;
 	}
 
-	run(page) {
-		return page.type(this.selector, this.text);
+	async run(page) {
+		const elementHandle = await page.$(this.selector);
+		return Promise.all([await elementHandle.click({clickCount: 3}), await elementHandle.press('Backspace'), await elementHandle.type(this.text)]);
+		// return page.type(this.selector, this.text);
 	}
 
 	toString() {
